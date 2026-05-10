@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Disallow: /panier
+Disallow: /checkout
+Disallow: /api/
+
+Sitemap: https://shop.votre-domaine.com/sitemap.xml

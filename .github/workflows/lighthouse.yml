@@ -1,0 +1,40 @@
+# ═══════════════════════════════════════════════════════════════
+# NEXUS Electronics — Lighthouse Audit
+# ═══════════════════════════════════════════════════════════════
+
+name: NEXUS — Lighthouse Audit
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 6 * * 1' # Every Monday at 6:00 AM UTC
+
+jobs:
+  lighthouse:
+    name: 🔦 Lighthouse Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Lighthouse
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          urls: |
+            https://shop.votre-domaine.com
+            https://shop.votre-domaine.com/produits
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          configPath: ./lighthouserc.json
+
+      - name: Check scores
+        run: |
+          echo "═══════════════════════════════════════════════════════════════"
+          echo " Lighthouse Target Scores"
+          echo "═══════════════════════════════════════════════════════════════"
+          echo " Performance:   ≥ 90"
+          echo " SEO:           ≥ 95"
+          echo " Accessibility: ≥ 90"
+          echo " Best Practices: ≥ 90"
+          echo "═══════════════════════════════════════════════════════════════"

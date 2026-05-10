@@ -1,0 +1,252 @@
+# ═══════════════════════════════════════════════════════════════
+# NEXUS Electronics — CI/CD Pipeline
+# ═══════════════════════════════════════════════════════════════
+#
+# GitHub Secrets required:
+#   CONTABO_HOST        - VPS IP address
+#   CONTABO_SSH_KEY     - SSH private key (ed25519)
+#   VITE_ODOO_URL       - https://erp.votre-domaine.com
+#   VITE_ODOO_DB        - nexus_production
+#   VITE_ODOO_USER      - api_ecommerce
+#   VITE_ODOO_PASS      - Strong password
+#   VITE_APP_URL        - https://shop.votre-domaine.com
+#   VITE_GTM_ID         - GTM-XXXXXXX (optional)
+#   NOTIFY_WEBHOOK      - Slack/Discord webhook URL
+#
+# ═══════════════════════════════════════════════════════════════
+
+name: NEXUS — CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+env:
+  NODE_VERSION: '20'
+  DEPLOY_PATH: /var/www/nexus
+  DEPLOY_USER: nexus-deploy
+
+jobs:
+  # ─────────────────────────────────────────────────────────────
+  # Job 1: Lint
+  # ─────────────────────────────────────────────────────────────
+  lint:
+    name: 🔍 Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+  # ─────────────────────────────────────────────────────────────
+  # Job 2: Test
+  # ─────────────────────────────────────────────────────────────
+  test:
+    name: 🧪 Test
+    runs-on: ubuntu-latest
+    needs: [lint]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/
+          retention-days: 7
+
+  # ─────────────────────────────────────────────────────────────
+  # Job 3: Build
+  # ─────────────────────────────────────────────────────────────
+  build:
+    name: 🔨 Build
+    runs-on: ubuntu-latest
+    needs: [test]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create .env.production
+        run: |
+          cat > .env.production << EOF
+          VITE_ODOO_URL=${{ secrets.VITE_ODOO_URL }}
+          VITE_ODOO_DB=${{ secrets.VITE_ODOO_DB }}
+          VITE_ODOO_USER=${{ secrets.VITE_ODOO_USER }}
+          VITE_ODOO_PASS=${{ secrets.VITE_ODOO_PASS }}
+          VITE_APP_URL=${{ secrets.VITE_APP_URL }}
+          VITE_APP_NAME=NEXUS Electronics
+          VITE_GTM_ID=${{ secrets.VITE_GTM_ID }}
+          EOF
+
+      - name: Build project
+        run: npm run build
+
+      - name: Check bundle size
+        run: |
+          BUNDLE_SIZE=$(du -sk dist/ | cut -f1)
+          echo "Bundle size: ${BUNDLE_SIZE}KB"
+          if [ $BUNDLE_SIZE -gt 5000 ]; then
+            echo "⚠️ Warning: Bundle size exceeds 5MB"
+          fi
+
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 1
+
+      - name: Upload stats artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: stats
+          path: stats.html
+          retention-days: 7
+
+  # ─────────────────────────────────────────────────────────────
+  # Job 4: Deploy Staging
+  # ─────────────────────────────────────────────────────────────
+  deploy-staging:
+    name: 🚀 Deploy Staging
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: github.ref == 'refs/heads/develop'
+    environment: staging
+    steps:
+      - name: Download dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.CONTABO_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.CONTABO_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to staging
+        run: |
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/deploy_key" \
+            dist/ \
+            ${{ env.DEPLOY_USER }}@${{ secrets.CONTABO_HOST }}:${{ env.DEPLOY_PATH }}/staging/
+
+      - name: Reload nginx
+        run: |
+          ssh -i ~/.ssh/deploy_key ${{ env.DEPLOY_USER }}@${{ secrets.CONTABO_HOST }} \
+            "sudo nginx -t && sudo systemctl reload nginx"
+
+      - name: Deployment status
+        run: echo "✅ Deployed to staging"
+
+  # ─────────────────────────────────────────────────────────────
+  # Job 5: Deploy Production
+  # ─────────────────────────────────────────────────────────────
+  deploy-production:
+    name: 🚀 Deploy Production
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.CONTABO_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.CONTABO_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Generate release name
+        id: release
+        run: echo "name=$(date +%Y%m%d_%H%M%S)" >> $GITHUB_OUTPUT
+
+      - name: Deploy release
+        run: |
+          RELEASE_PATH="${{ env.DEPLOY_PATH }}/releases/${{ steps.release.outputs.name }}"
+          rsync -avz \
+            -e "ssh -i ~/.ssh/deploy_key" \
+            dist/ \
+            ${{ env.DEPLOY_USER }}@${{ secrets.CONTABO_HOST }}:${RELEASE_PATH}/
+
+      - name: Activate release
+        run: |
+          ssh -i ~/.ssh/deploy_key ${{ env.DEPLOY_USER }}@${{ secrets.CONTABO_HOST }} \
+            "bash ${{ env.DEPLOY_PATH }}/shared/deploy.sh ${{ steps.release.outputs.name }}"
+
+      - name: Deployment status
+        run: echo "🚀 Deployed to production — release ${{ steps.release.outputs.name }}"
+
+  # ─────────────────────────────────────────────────────────────
+  # Job 6: Notify
+  # ─────────────────────────────────────────────────────────────
+  notify:
+    name: 📢 Notify
+    runs-on: ubuntu-latest
+    needs: [deploy-production]
+    if: always()
+    steps:
+      - name: Send notification
+        run: |
+          if [ "${{ needs.deploy-production.result }}" == "success" ]; then
+            STATUS="✅ Success"
+            COLOR="65280"
+          else
+            STATUS="❌ Failed"
+            COLOR="16711680"
+          fi
+
+          curl -X POST "${{ secrets.NOTIFY_WEBHOOK }}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"embeds\": [{
+                \"title\": \"NEXUS Deployment ${STATUS}\",
+                \"description\": \"Branch: ${{ github.ref_name }}\nCommit: ${{ github.sha }}\nRun: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\",
+                \"color\": ${COLOR}
+              }]
+            }" || true
