@@ -13,8 +13,7 @@ import BreadcrumbSchema from '@/seo/BreadcrumbSchema'
 import { Button, Badge, PriceDisplay, Skeleton } from '@/components/ui'
 import ImageWithFallback from '@/components/seo/ImageWithFallback'
 import ProductGrid from '@/components/product/ProductGrid'
-import { cn, getStockLabel, getStockColor, formatPrice } from '@/lib/utils'
-import type { Product } from '@/types'
+import { cn, getStockLabel, getStockColor } from '@/lib/utils'
 
 export default function ProductPage() {
   const { id } = useParams<{ id: string }>()

@@ -36,3 +36,5 @@ stats.html
 # Temp files
 *.tmp
 *.temp
+
+.vercel

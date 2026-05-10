@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowLeft, CreditCard, Check, Lock } from 'lucide-react'
 import toast from 'react-hot-toast'
@@ -11,11 +11,11 @@ import SeoHead from '@/seo/SeoHead'
 import { Button, Input, PriceDisplay } from '@/components/ui'
 import ImageWithFallback from '@/components/seo/ImageWithFallback'
 import { formatPrice } from '@/lib/utils'
+import type { CartItem } from '@/types'
 
 type Step = 'info' | 'payment' | 'confirmation'
 
 export default function CheckoutPage() {
-  const navigate = useNavigate()
   const [step, setStep] = useState<Step>('info')
   const [formData, setFormData] = useState({
     email: '',
@@ -26,7 +26,7 @@ export default function CheckoutPage() {
     postalCode: '',
   })
 
-  const { items, getSubtotal, getTax, getTotal, clearCart } = useCartStore()
+  const { items, getSubtotal, getTax, getTotal } = useCartStore()
   const createOrderMutation = useCreateOrder()
   const confirmOrderMutation = useConfirmOrder()
 
@@ -59,7 +59,7 @@ export default function CheckoutPage() {
     }
   }
 
-  const handlePayment = async (method: 'stripe' | 'paypal') => {
+  const handlePayment = async (_method: 'stripe' | 'paypal') => {
     try {
       // Simulate payment processing
       toast.loading('Traitement du paiement...', { id: 'payment' })
@@ -289,7 +289,7 @@ function OrderSummary({
   getTax,
   getTotal,
 }: {
-  items: ReturnType<typeof useCartStore>['items']
+  items: CartItem[]
   getSubtotal: () => number
   getTax: () => number
   getTotal: () => number

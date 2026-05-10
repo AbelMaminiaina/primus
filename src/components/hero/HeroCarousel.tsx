@@ -5,7 +5,6 @@ import { ArrowRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useHeroSlides } from '@/hooks/useOdoo'
 import { Button } from '@/components/ui'
-import { cn } from '@/lib/utils'
 
 import 'swiper/css'
 import 'swiper/css/effect-fade'

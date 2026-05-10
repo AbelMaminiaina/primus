@@ -42,10 +42,10 @@ let _uid: number | null = null
 let _authPromise: Promise<number> | null = null
 
 export async function authenticate(): Promise<number> {
-  if (_uid) return _uid
+  if (_uid !== null) return _uid
   if (_authPromise) return _authPromise
 
-  _authPromise = (async () => {
+  _authPromise = (async (): Promise<number> => {
     try {
       const response = await axiosInstance.post('/web/session/authenticate', {
         jsonrpc: '2.0',
@@ -60,7 +60,7 @@ export async function authenticate(): Promise<number> {
 
       if (response.data.result?.uid) {
         _uid = response.data.result.uid
-        return _uid
+        return _uid as number
       }
 
       throw new Error('Authentication failed')

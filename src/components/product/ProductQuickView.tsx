@@ -1,6 +1,5 @@
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { motion } from 'framer-motion'
 import { X, ShoppingCart, Heart, Minus, Plus } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import toast from 'react-hot-toast'

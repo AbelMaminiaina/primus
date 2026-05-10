@@ -7,7 +7,7 @@ import { useUIStore, useCartStore } from '@/store'
 import { productImageUrl } from '@/api/odooClient'
 import { Button, PriceDisplay } from '@/components/ui'
 import ImageWithFallback from '@/components/seo/ImageWithFallback'
-import { cn, formatPrice } from '@/lib/utils'
+import { formatPrice } from '@/lib/utils'
 
 export default function CartDrawer() {
   const { isCartOpen, closeCart } = useUIStore()
