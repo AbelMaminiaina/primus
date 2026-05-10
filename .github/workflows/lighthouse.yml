@@ -1,8 +1,8 @@
 # ═══════════════════════════════════════════════════════════════
-# NEXUS Electronics — Lighthouse Audit
+# PRIMUS Electronics — Lighthouse Audit
 # ═══════════════════════════════════════════════════════════════
 
-name: NEXUS — Lighthouse Audit
+name: PRIMUS — Lighthouse Audit
 
 on:
   push:

@@ -6,7 +6,7 @@ export default function OrganizationSchema() {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'NEXUS Electronics',
+    name: 'PRIMUS Electronics',
     url: APP_URL,
     logo: `${APP_URL}/logo.svg`,
     description: 'E-commerce high-tech premium à Madagascar. Smartphones, laptops, audio, gaming. Livraison rapide à Antananarivo.',
@@ -14,7 +14,7 @@ export default function OrganizationSchema() {
       '@type': 'ContactPoint',
       telephone: '+261-34-00-000-00',
       contactType: 'customer service',
-      email: 'contact@nexus-electronics.com',
+      email: 'contact@primus-electronics.com',
       areaServed: 'MG',
       availableLanguage: ['French', 'Malagasy'],
     },
@@ -26,10 +26,10 @@ export default function OrganizationSchema() {
       addressCountry: 'MG',
     },
     sameAs: [
-      'https://twitter.com/nexuselectronics',
-      'https://facebook.com/nexuselectronics',
-      'https://instagram.com/nexuselectronics',
-      'https://linkedin.com/company/nexuselectronics',
+      'https://twitter.com/primuselectronics',
+      'https://facebook.com/primuselectronics',
+      'https://instagram.com/primuselectronics',
+      'https://linkedin.com/company/primuselectronics',
     ],
   }
 

@@ -134,7 +134,7 @@ export default function ProductPage() {
               )}
               <ImageWithFallback
                 src={productImageUrl(product.id, '512')}
-                alt={`${product.name} — ${product.categ_id[1]} | NEXUS`}
+                alt={`${product.name} — ${product.categ_id[1]} | PRIMUS`}
                 fallbackEmoji={product.emoji || '📦'}
                 aspectRatio="square"
                 className="w-full"

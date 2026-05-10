@@ -94,7 +94,7 @@ export default function ProductQuickView({ product, isOpen, onClose }: ProductQu
                     )}
                     <ImageWithFallback
                       src={productImageUrl(product.id, '512')}
-                      alt={`${product.name} — ${product.categ_id[1]} | NEXUS`}
+                      alt={`${product.name} — ${product.categ_id[1]} | PRIMUS`}
                       fallbackEmoji={product.emoji || '📦'}
                       className="w-full rounded-xl"
                     />

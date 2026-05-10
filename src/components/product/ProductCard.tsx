@@ -97,7 +97,7 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
       <Link to={`/produits/${product.id}`} className="block p-4">
         <ImageWithFallback
           src={productImageUrl(product.id, '256')}
-          alt={`${product.name} — ${product.categ_id[1]} | NEXUS`}
+          alt={`${product.name} — ${product.categ_id[1]} | PRIMUS`}
           fallbackEmoji={product.emoji || '📦'}
           className="w-full"
         />

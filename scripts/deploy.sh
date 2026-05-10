@@ -1,16 +1,16 @@
 #!/bin/bash
 # ═══════════════════════════════════════════════════════════════
-# NEXUS Electronics — Deployment Script
+# PRIMUS Electronics — Deployment Script
 # Called by GitHub Actions CI/CD
 # ═══════════════════════════════════════════════════════════════
 
 set -e
 
-DEPLOY_PATH="/var/www/nexus"
+DEPLOY_PATH="/var/www/primus"
 RELEASE_NAME="${1:-$(date +%Y%m%d_%H%M%S)}"
 RELEASE_PATH="${DEPLOY_PATH}/releases/${RELEASE_NAME}"
 CURRENT_PATH="${DEPLOY_PATH}/current"
-LOG_FILE="/var/log/nexus-deploy.log"
+LOG_FILE="/var/log/primus-deploy.log"
 
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] Starting deployment: ${RELEASE_NAME}" >> "${LOG_FILE}"
 

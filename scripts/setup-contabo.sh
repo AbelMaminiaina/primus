@@ -1,13 +1,13 @@
 #!/bin/bash
 # ═══════════════════════════════════════════════════════════════
-# NEXUS Electronics — Contabo VPS Setup Script
+# PRIMUS Electronics — Contabo VPS Setup Script
 # Run as root on Ubuntu 22.04 LTS
 # ═══════════════════════════════════════════════════════════════
 
 set -e
 
 echo "═══════════════════════════════════════════════════════════════"
-echo " NEXUS Electronics — VPS Setup"
+echo " PRIMUS Electronics — VPS Setup"
 echo "═══════════════════════════════════════════════════════════════"
 
 # Update system
@@ -107,24 +107,24 @@ fi
 sudo -u postgres createuser -s odoo 2>/dev/null || true
 
 # Create deploy user
-if ! id "nexus-deploy" &>/dev/null; then
-    useradd -m -d /home/nexus-deploy -s /bin/bash nexus-deploy
-    mkdir -p /home/nexus-deploy/.ssh
-    chmod 700 /home/nexus-deploy/.ssh
-    chown -R nexus-deploy:nexus-deploy /home/nexus-deploy
+if ! id "primus-deploy" &>/dev/null; then
+    useradd -m -d /home/primus-deploy -s /bin/bash primus-deploy
+    mkdir -p /home/primus-deploy/.ssh
+    chmod 700 /home/primus-deploy/.ssh
+    chown -R primus-deploy:primus-deploy /home/primus-deploy
 fi
 
 # Create deployment directories
-mkdir -p /var/www/nexus/{current,releases,shared}
-chown -R nexus-deploy:nexus-deploy /var/www/nexus
+mkdir -p /var/www/primus/{current,releases,shared}
+chown -R primus-deploy:primus-deploy /var/www/primus
 
 # Configure sudo for deploy user
-cat > /etc/sudoers.d/nexus-deploy << 'EOF'
-nexus-deploy ALL=(ALL) NOPASSWD: /usr/bin/rsync
-nexus-deploy ALL=(ALL) NOPASSWD: /usr/sbin/nginx -t
-nexus-deploy ALL=(ALL) NOPASSWD: /usr/bin/systemctl reload nginx
+cat > /etc/sudoers.d/primus-deploy << 'EOF'
+primus-deploy ALL=(ALL) NOPASSWD: /usr/bin/rsync
+primus-deploy ALL=(ALL) NOPASSWD: /usr/sbin/nginx -t
+primus-deploy ALL=(ALL) NOPASSWD: /usr/bin/systemctl reload nginx
 EOF
-chmod 440 /etc/sudoers.d/nexus-deploy
+chmod 440 /etc/sudoers.d/primus-deploy
 
 echo ""
 echo "═══════════════════════════════════════════════════════════════"
@@ -132,9 +132,9 @@ echo " Setup Complete!"
 echo "═══════════════════════════════════════════════════════════════"
 echo ""
 echo "Next steps:"
-echo "1. Add SSH public key to /home/nexus-deploy/.ssh/authorized_keys"
+echo "1. Add SSH public key to /home/primus-deploy/.ssh/authorized_keys"
 echo "2. Run: certbot --nginx -d shop.votre-domaine.com -d erp.votre-domaine.com"
 echo "3. Copy nginx configs to /etc/nginx/sites-available/"
-echo "4. Enable sites: ln -s /etc/nginx/sites-available/nexus-shop /etc/nginx/sites-enabled/"
+echo "4. Enable sites: ln -s /etc/nginx/sites-available/primus-shop /etc/nginx/sites-enabled/"
 echo "5. Test and reload nginx: nginx -t && systemctl reload nginx"
 echo ""

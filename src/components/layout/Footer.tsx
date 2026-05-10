@@ -36,10 +36,10 @@ export default function Footer() {
   ]
 
   const socials = [
-    { href: 'https://facebook.com/nexuselectronics', icon: Facebook, label: 'Facebook' },
-    { href: 'https://twitter.com/nexuselectronics', icon: Twitter, label: 'Twitter' },
-    { href: 'https://instagram.com/nexuselectronics', icon: Instagram, label: 'Instagram' },
-    { href: 'https://linkedin.com/company/nexuselectronics', icon: Linkedin, label: 'LinkedIn' },
+    { href: 'https://facebook.com/primuselectronics', icon: Facebook, label: 'Facebook' },
+    { href: 'https://twitter.com/primuselectronics', icon: Twitter, label: 'Twitter' },
+    { href: 'https://instagram.com/primuselectronics', icon: Instagram, label: 'Instagram' },
+    { href: 'https://linkedin.com/company/primuselectronics', icon: Linkedin, label: 'LinkedIn' },
   ]
 
   return (
@@ -52,7 +52,7 @@ export default function Footer() {
           <div className="col-span-2 lg:col-span-2">
             <Link to="/" className="inline-block mb-4">
               <span className="font-display text-2xl font-bold text-volt-400">
-                NEXUS
+                PRIMUS
               </span>
               <span className="text-ink-400 ml-2">Electronics</span>
             </Link>
@@ -63,11 +63,11 @@ export default function Footer() {
             {/* Contact info */}
             <div className="space-y-2 text-sm">
               <a
-                href="mailto:contact@nexus-electronics.com"
+                href="mailto:contact@primus-electronics.com"
                 className="flex items-center gap-2 text-ink-300 hover:text-volt-400 transition-colors"
               >
                 <Mail className="h-4 w-4" />
-                contact@nexus-electronics.com
+                contact@primus-electronics.com
               </a>
               <a
                 href="tel:+261340000000"
@@ -155,7 +155,7 @@ export default function Footer() {
         {/* Bottom */}
         <div className="mt-12 pt-8 border-t border-ink-700 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-ink-400">
-            © {currentYear} NEXUS Electronics — Tous droits réservés
+            © {currentYear} PRIMUS Electronics — Tous droits réservés
           </p>
 
           {/* Social links */}

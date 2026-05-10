@@ -9,7 +9,7 @@ interface OdooConfig {
 
 const ODOO_CONFIG: OdooConfig = {
   baseUrl: import.meta.env.VITE_ODOO_URL || 'http://localhost:8069',
-  db: import.meta.env.VITE_ODOO_DB || 'nexus',
+  db: import.meta.env.VITE_ODOO_DB || 'primus',
   login: import.meta.env.VITE_ODOO_USER || 'admin',
   password: import.meta.env.VITE_ODOO_PASS || 'admin',
 }

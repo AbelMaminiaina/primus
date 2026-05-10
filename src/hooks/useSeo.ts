@@ -63,7 +63,7 @@ export function usePageSeo(type: PageType, data?: Product | CatalogData | null):
       case 'cart':
         return {
           title: 'Votre panier',
-          description: 'Finalisez votre commande sur NEXUS Electronics.',
+          description: 'Finalisez votre commande sur PRIMUS Electronics.',
           canonical: `${APP_URL}/panier`,
           noIndex: true,
         }
@@ -78,7 +78,7 @@ export function usePageSeo(type: PageType, data?: Product | CatalogData | null):
 
       default:
         return {
-          title: 'NEXUS Electronics',
+          title: 'PRIMUS Electronics',
           description: 'High-Tech Premium',
           canonical: APP_URL,
         }

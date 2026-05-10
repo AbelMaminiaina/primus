@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// NEXUS Electronics — Type Definitions
+// PRIMUS Electronics — Type Definitions
 // ═══════════════════════════════════════════════════════════════
 
 export interface Product {

@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async'
 
 const APP_URL = import.meta.env.VITE_APP_URL || 'https://shop.votre-domaine.com'
-const APP_NAME = import.meta.env.VITE_APP_NAME || 'NEXUS Electronics'
+const APP_NAME = import.meta.env.VITE_APP_NAME || 'PRIMUS Electronics'
 
 interface SeoHeadProps {
   title?: string

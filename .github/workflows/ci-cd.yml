@@ -1,12 +1,12 @@
 # ═══════════════════════════════════════════════════════════════
-# NEXUS Electronics — CI/CD Pipeline
+# PRIMUS Electronics — CI/CD Pipeline
 # ═══════════════════════════════════════════════════════════════
 #
 # GitHub Secrets required:
 #   CONTABO_HOST        - VPS IP address
 #   CONTABO_SSH_KEY     - SSH private key (ed25519)
 #   VITE_ODOO_URL       - https://erp.votre-domaine.com
-#   VITE_ODOO_DB        - nexus_production
+#   VITE_ODOO_DB        - primus_production
 #   VITE_ODOO_USER      - api_ecommerce
 #   VITE_ODOO_PASS      - Strong password
 #   VITE_APP_URL        - https://shop.votre-domaine.com
@@ -15,7 +15,7 @@
 #
 # ═══════════════════════════════════════════════════════════════
 
-name: NEXUS — CI/CD Pipeline
+name: PRIMUS — CI/CD Pipeline
 
 on:
   push:
@@ -25,8 +25,8 @@ on:
 
 env:
   NODE_VERSION: '20'
-  DEPLOY_PATH: /var/www/nexus
-  DEPLOY_USER: nexus-deploy
+  DEPLOY_PATH: /var/www/primus
+  DEPLOY_USER: primus-deploy
 
 jobs:
   # ─────────────────────────────────────────────────────────────
@@ -109,7 +109,7 @@ jobs:
           VITE_ODOO_USER=${{ secrets.VITE_ODOO_USER }}
           VITE_ODOO_PASS=${{ secrets.VITE_ODOO_PASS }}
           VITE_APP_URL=${{ secrets.VITE_APP_URL }}
-          VITE_APP_NAME=NEXUS Electronics
+          VITE_APP_NAME=PRIMUS Electronics
           VITE_GTM_ID=${{ secrets.VITE_GTM_ID }}
           EOF
 
@@ -245,7 +245,7 @@ jobs:
             -H "Content-Type: application/json" \
             -d "{
               \"embeds\": [{
-                \"title\": \"NEXUS Deployment ${STATUS}\",
+                \"title\": \"PRIMUS Deployment ${STATUS}\",
                 \"description\": \"Branch: ${{ github.ref_name }}\nCommit: ${{ github.sha }}\nRun: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\",
                 \"color\": ${COLOR}
               }]

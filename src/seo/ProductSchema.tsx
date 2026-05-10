@@ -19,7 +19,7 @@ export default function ProductSchema({ product }: ProductSchemaProps) {
     image: productImageUrl(product.id, '512'),
     brand: {
       '@type': 'Brand',
-      name: 'NEXUS Electronics',
+      name: 'PRIMUS Electronics',
     },
     offers: {
       '@type': 'Offer',
@@ -31,7 +31,7 @@ export default function ProductSchema({ product }: ProductSchemaProps) {
       url: `${APP_URL}/produits/${product.id}`,
       seller: {
         '@type': 'Organization',
-        name: 'NEXUS Electronics',
+        name: 'PRIMUS Electronics',
       },
       priceValidUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
     },

@@ -40,7 +40,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
             <span className="font-display text-xl font-bold text-volt-400">
-              NEXUS
+              PRIMUS
             </span>
             <span className="hidden sm:inline text-ink-400 text-sm">Electronics</span>
           </Link>

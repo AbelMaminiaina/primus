@@ -94,7 +94,7 @@ export const useCartStore = create<CartState>()(
         },
       }),
       {
-        name: 'nexus-cart',
+        name: 'primus-cart',
         partialize: (state) => ({
           items: state.items,
           odooOrderId: state.odooOrderId,
@@ -157,7 +157,7 @@ export const useWishlistStore = create<WishlistState>()(
         },
       }),
       {
-        name: 'nexus-wishlist',
+        name: 'primus-wishlist',
       }
     ),
     { name: 'WishlistStore' }

@@ -12,7 +12,7 @@ describe('SeoHead', () => {
     renderWithHelmet(<SeoHead />)
 
     await waitFor(() => {
-      expect(document.title).toContain('NEXUS Electronics')
+      expect(document.title).toContain('PRIMUS Electronics')
     })
   })
 
@@ -21,7 +21,7 @@ describe('SeoHead', () => {
 
     await waitFor(() => {
       expect(document.title).toContain('MacBook Pro')
-      expect(document.title).toContain('NEXUS Electronics')
+      expect(document.title).toContain('PRIMUS Electronics')
     })
   })
 
